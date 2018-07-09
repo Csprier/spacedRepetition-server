@@ -25,7 +25,7 @@ router.post('/refresh', jwtAuth, (req, res) => {
 });
 
 // GET ALL USERS
-router.get('/v1', (req, res, next) => {
+router.get('/', (req, res, next) => {
   User.find()
     .then(user => {
       res.json(user);
