@@ -2,7 +2,7 @@
 
 const express = require('express');
 
-const User = require('../models/user');
+const User = require('../../users/user');
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
+  
   if (missingField) {
     const err = new Error(`Missing ${missingField} in request body`);
     err.status = 422;
@@ -29,7 +30,7 @@ router.post('/', (req, res, next) => {
     return next(err);
   }
 
-  const stringFields = ['username', 'password', 'fullname'];
+  const stringFields = ['username', 'password'];
   const nonStringField = stringFields.find(field => {
     field in req.body && typeof req.body[field] !== 'string';
   });
@@ -85,15 +86,13 @@ router.post('/', (req, res, next) => {
   }
 
   // Create the new user
-  let { username, password, fullname = '' } = req.body;
-  fullname = fullname.trim();
+  let { username, password } = req.body;
 
   return User.hashPassword(password)
     .then(digest => {
       const newUser = {
         username, 
-        password: digest, 
-        fullname
+        password: digest
       };
       return User.create(newUser);
     })

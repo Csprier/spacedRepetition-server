@@ -1,12 +1,20 @@
 'use strict';
 
 require('dotenv').config();
+const { JWT_SECRET } = require('./config');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const passport = require('passport');
 
+const localStrategy = require('./auth/local');
+const jwtStrategy = require('./auth/jwt');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
+
+// ROUTERS
+const userRouter = require('./users/routes/user');
+const authRouter = require('./users/routes/auth');
 
 const app = express();
 
@@ -21,6 +29,22 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
+// Parse requiest body
+app.use(express.json());
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use('/api', authRouter);
+app.use('/api/users', userRouter);
+
+app.use(function(req, res, next) {
+  const err = new Error('Not Found');
+  err.status = 404;
+  console.error(err);
+  next(err);
+});
 
 function runServer(port = PORT) {
   const server = app
