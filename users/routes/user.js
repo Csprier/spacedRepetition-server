@@ -6,17 +6,17 @@ const User = require('../../users/user');
 
 const router = express.Router();
 
-// GET ALL USERS
-router.get('/', (req, res, next) => {
-  User.find()
-    .then(user => {
-      res.json(user);
-    })
-    .catch(err => {
-      console.error(err);
-      next(err);
-    });
-});
+// // GET ALL USERS
+// router.get('/', (req, res, next) => {
+//   User.find()
+//     .then(user => {
+//       res.json(user);
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       next(err);
+//     });
+// });
 
 // CREATE NEW USER
 router.post('/', (req, res, next) => {

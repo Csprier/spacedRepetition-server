@@ -4,6 +4,9 @@ const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+// DELETE THIS AND GET ENDPOINT LATER
+const User = require('../../users/user');
+
 const { JWT_SECRET, JWT_EXPIRY } = require('../../config');
 const router = express.Router();
 
@@ -21,8 +24,20 @@ router.post('/refresh', jwtAuth, (req, res) => {
   res.json({ authToken });
 });
 
+// GET ALL USERS
+router.get('/', (req, res, next) => {
+  User.find()
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => {
+      console.error(err);
+      next(err);
+    });
+});
+
 function createAuthToken(user) {
-  return jwt.sign({ user}, JWT_SECRET, {
+  return jwt.sign({ user }, JWT_SECRET, {
     subject: user.username,
     expiresIn: JWT_EXPIRY
   });
