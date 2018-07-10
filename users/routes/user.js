@@ -95,7 +95,7 @@ router.post('/', (req, res, next) => {
       const newUser = {
         username, 
         password: digest,
-        currentQuestion: main()
+        questions: main()
       };
       return User.create(newUser);
     })

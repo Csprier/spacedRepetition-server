@@ -6,7 +6,7 @@ const questionSchema = new mongoose.Schema({
   word: { type: String },
   answer: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  currentQuestion: { type: Object }
+  next: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' }
 });
 
 questionSchema.set('toObject', {

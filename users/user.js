@@ -2,11 +2,12 @@
 
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const questionSchema = require('../questions/questions');
+// const questionSchema = require('../questions/questions');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, default: '', unique: true },
   password: { type: String, require: true },
+  questions: { type: Object, required: true },
   currentQuestion: { type: Object, required: true }
 }, { timestamps: true });
 
