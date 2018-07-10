@@ -93,7 +93,7 @@ router.post('/', (req, res, next) => {
       const newUser = {
         username, 
         password: digest,
-        questions
+        questions: { test: 'Hello' }
       };
       return User.create(newUser);
     })
