@@ -6,6 +6,8 @@ const User = require('../../users/user');
 
 const router = express.Router();
 
+const main = require('../../linkedList/index');
+
 // GET ALL USERS
 router.get('/', (req, res, next) => {
   User.find()
@@ -92,7 +94,8 @@ router.post('/', (req, res, next) => {
     .then(digest => {
       const newUser = {
         username, 
-        password: digest
+        password: digest,
+        currentQuestion: main()
       };
       return User.create(newUser);
     })

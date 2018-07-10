@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   username: { type: String, default: '', unique: true },
   password: { type: String, require: true },
-  questions: {}
+  currentQuestion: { type: Object, required: true }
 }, { timestamps: true });
 
 userSchema.set('toObject', {
@@ -18,11 +18,11 @@ userSchema.set('toObject', {
   }
 });
 
-userSchema.methods.validatePassword = function(password) {
+userSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-userSchema.statics.hashPassword = function(password) {
+userSchema.statics.hashPassword = function (password) {
   return bcrypt.hash(password, 10);
 };
 
