@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   username: { type: String, default: '', unique: true },
   password: { type: String, require: true },
-  questions: {}
+  questions: { type: Object }
 }, { timestamps: true });
 
 userSchema.set('toObject', {

@@ -86,13 +86,14 @@ router.post('/', (req, res, next) => {
   }
 
   // Create the new user
-  let { username, password } = req.body;
+  let { username, password, questions } = req.body;
 
   return User.hashPassword(password)
     .then(digest => {
       const newUser = {
         username, 
-        password: digest
+        password: digest,
+        questions: {}
       };
       return User.create(newUser);
     })
