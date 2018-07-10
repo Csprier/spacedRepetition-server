@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, default: '', unique: true },
-  password: { type: String, require: true }
+  password: { type: String, require: true },
+  questions: {}
 }, { timestamps: true });
 
 userSchema.set('toObject', {
@@ -26,3 +27,21 @@ userSchema.statics.hashPassword = function(password) {
 };
 
 module.exports = mongoose.model('User', userSchema);
+
+/*
+{
+  username: "fuckhead"
+  id: "1m214b5b1525135123"
+  questions: {
+    word: "word-to-guess1"
+    answer: "answer-to-word1
+    userId: "1m214b5b1525135123"
+    next: {
+      word: "word-to-guess2"
+      answer: "answer-to-word2"
+      userId: "1m214b5b1525135123"
+      next: {}
+    }
+  }
+}
+*/

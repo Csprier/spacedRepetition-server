@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
   word: { type: String },
-  answer: { type: String }
+  answer: { type: String },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  next: {}
 });
 
 questionSchema.set('toObject', {
@@ -15,3 +17,4 @@ questionSchema.set('toObject', {
 });
 
 module.exports = mongoose.model('Question', questionSchema);
+
