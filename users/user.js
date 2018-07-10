@@ -28,21 +28,3 @@ userSchema.statics.hashPassword = function (password) {
 };
 
 module.exports = mongoose.model('User', userSchema);
-
-/*
-{
-  username: "fuckhead"
-  id: "1m214b5b1525135123"
-  questions: {
-    word: "word-to-guess1"
-    answer: "answer-to-word1
-    userId: "1m214b5b1525135123"
-    next: {
-      word: "word-to-guess2"
-      answer: "answer-to-word2"
-      userId: "1m214b5b1525135123"
-      next: {}
-    }
-  }
-}
-*/

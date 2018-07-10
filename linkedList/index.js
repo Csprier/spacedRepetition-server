@@ -49,7 +49,7 @@ let allQuestions = [
 function main(){
   let questions = new LinkedList();
   allQuestions.forEach(item => {
-    questions.insertFirst(item);
+    questions.insertLast(item);
   });
   return questions;
 }
