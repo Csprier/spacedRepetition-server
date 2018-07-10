@@ -6,7 +6,7 @@ const User = require('../../users/user');
 
 const router = express.Router();
 
-// // GET ALL USERS
+// GET ALL USERS
 router.get('/', (req, res, next) => {
   User.find()
     .then(user => {

@@ -1,7 +1,8 @@
 'use strict';
 
 require('dotenv').config();
-const { JWT_SECRET } = require('./config');
+// const { JWT_SECRET } = require('./config');
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -15,6 +16,7 @@ const { dbConnect } = require('./db-mongoose');
 // ROUTERS
 const userRouter = require('./users/routes/user');
 const authRouter = require('./users/routes/auth');
+const questionRouter = require('./questions/routes/questions');
 
 // Express app
 const app = express();
@@ -43,6 +45,7 @@ passport.use(jwtStrategy);
 // Endpoints
 app.use('/api', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/questions', questionRouter);
 
 // Catch-all 404
 app.use(function(req, res, next) {

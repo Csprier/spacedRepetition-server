@@ -7,4 +7,10 @@ const questionSchema = new mongoose.Schema({
   answer: { type: String }
 });
 
+questionSchema.set('toObject', {
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+  }
+});
+
 module.exports = mongoose.model('Question', questionSchema);
