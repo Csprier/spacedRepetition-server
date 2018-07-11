@@ -8,6 +8,7 @@ const router = express.Router();
 
 const questions = require('../../linkedList/index');
 
+/* =================================================================================== */
 // GET ALL USERS
 router.get('/', (req, res, next) => {
   User.find()
@@ -32,6 +33,23 @@ router.get('/next', (req, res, next) => {
     });
 });
 
+// POST ANSWER
+router.post('/answer', (req, res, next) => {
+  User.findOne()
+    .then(user => {
+      const answeredIndex = user.head;
+      const answeredQuestion = user.questions[answeredIndex];
+      if () {
+        // set m for answeredQuestion m value
+      } else {
+        // set m for answeredQuestion m value
+      }
+      // change current head to index of answered node
+      user.head = answeredQuestion.next;
+    })
+});
+
+/* =================================================================================== */
 // CREATE NEW USER
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
@@ -132,6 +150,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
+/* =================================================================================== */
 // DELETE A USER BY ID
 router.delete('/:id', (req, res, next) => {
   const { id } = req.params;
