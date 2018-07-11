@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
 router.get('/next', (req, res, next) => {
   User.findOne()
     .then(user => {
-      res.json(user.questions[user.head]);
+      res.json(user.questions[user.head].question);
     })
     .catch(err => {
       console.error(err);
@@ -35,18 +35,37 @@ router.get('/next', (req, res, next) => {
 
 // POST ANSWER
 router.post('/answer', (req, res, next) => {
-  User.findOne()
-    .then(user => {
-      const answeredIndex = user.head;
-      const answeredQuestion = user.questions[answeredIndex];
-      if () {
-        // set m for answeredQuestion m value
+  let {answer, userId} = req.body;
+  // console.log(req);
+  // User.findOne()
+  //   .then(user => {
+  //     const answeredIndex = user.head;
+  //     const answeredQuestion = user.questions[answeredIndex];
+  //     if () {
+  //       // set m for answeredQuestion m value
+  //     } else {
+  //       // set m for answeredQuestion m value
+  //     }
+  //     // change current head to index of answered node
+  //     user.head = answeredQuestion.next;
+  //   })
+  User.findById(userId)
+    .then(result => {
+      const answeredIndex = result.head;
+      const answeredQuestion = result.questions[answeredIndex];
+      if(answer.toLowerCase() === answeredQuestion.answer){
+        User.findOne({_id: userId})
+          .select({ questions: {$elemMatch: {answer: answeredQuestion.answer}}})
+          .then(result => {
+            console.log(result);
+          })
       } else {
-        // set m for answeredQuestion m value
+
       }
-      // change current head to index of answered node
-      user.head = answeredQuestion.next;
-    })
+      console.log(answer);
+    });
+  // console.log(userId);
+  res.json('hello');
 });
 
 /* =================================================================================== */
