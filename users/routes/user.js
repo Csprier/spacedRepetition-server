@@ -152,13 +152,20 @@ router.post('/answer', (req, res, next) => {
         .then(result => {
           if(answer.toLowerCase() === answeredQuestion.answer){
             console.log('you passed',answer);
-            result.questions[0].m = result.questions[0].m * 2; 
+            result.questions[answeredIndex].m *= 2;
             message = 'correct';
           } else {
             result.questions[0].m = 1; 
             message = 'incorrect';
           }
           result.head = answeredQuestion.next;
+          let currentQuestion = answeredQuestion;
+          for(let i = 0; i < answeredQuestion.m; i++){
+            const nextIndex = currentQuestion.next;
+            currentQuestion = result.questions[nextIndex];
+          }
+          answeredQuestion.next = currentQuestion.next;
+          currentQuestion.next = answeredIndex;
           result.save();
           (message === 'correct') ? res.json(true) : res.json(false);
         })
