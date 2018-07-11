@@ -36,19 +36,7 @@ router.get('/next', (req, res, next) => {
 // POST ANSWER
 router.post('/answer', (req, res, next) => {
   let {answer, userId} = req.body;
-  // console.log(req);
-  // User.findOne()
-  //   .then(user => {
-  //     const answeredIndex = user.head;
-  //     const answeredQuestion = user.questions[answeredIndex];
-  //     if () {
-  //       // set m for answeredQuestion m value
-  //     } else {
-  //       // set m for answeredQuestion m value
-  //     }
-  //     // change current head to index of answered node
-  //     user.head = answeredQuestion.next;
-  //   })
+  let message;
   User.findById(userId)
     .then(result => {
       const answeredIndex = result.head;
@@ -59,16 +47,20 @@ router.post('/answer', (req, res, next) => {
           if(answer.toLowerCase() === answeredQuestion.answer){
             result.questions[0].m = result.questions[0].m * 2; 
             result.save();
+            message = 'correct';
           } else {
             result.questions[0].m = 1; 
             result.save();
+            message = 'incorrect';
           }
           result.head = answeredQuestion.next;
+          result.save();
         });
        
     });
   // console.log(userId);
-  res.json('hello');
+
+  res.json(true);
 });
 
 /* =================================================================================== */
