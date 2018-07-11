@@ -53,16 +53,19 @@ router.post('/answer', (req, res, next) => {
     .then(result => {
       const answeredIndex = result.head;
       const answeredQuestion = result.questions[answeredIndex];
-      if(answer.toLowerCase() === answeredQuestion.answer){
-        User.findOne({_id: userId})
-          .select({ questions: {$elemMatch: {answer: answeredQuestion.answer}}})
-          .then(result => {
-            console.log(result);
-          })
-      } else {
-
-      }
-      console.log(answer);
+      
+      User.findOne({_id: userId})
+        .then(result => {
+          if(answer.toLowerCase() === answeredQuestion.answer){
+            result.questions[0].m = result.questions[0].m * 2; 
+            result.save();
+          } else {
+            result.questions[0].m = 1; 
+            result.save();
+          }
+          result.head = answeredQuestion.next;
+        });
+       
     });
   // console.log(userId);
   res.json('hello');
