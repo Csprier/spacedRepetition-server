@@ -6,7 +6,7 @@ const User = require('../../users/user');
 
 const router = express.Router();
 
-const main = require('../../linkedList/index');
+const questions = require('../../linkedList/index');
 
 // GET ALL USERS
 router.get('/', (req, res, next) => {
@@ -95,10 +95,17 @@ router.post('/', (req, res, next) => {
       const newUser = {
         username, 
         password: digest,
-        questions: main()
+        questions
       };
       return User.create(newUser);
     })
+    // .then((user, questions) => {
+    //   user.questions = questions.map((question, index) => ({
+    //     question: question.word,
+    //     m: 1,
+    //     next: index === questions.length - 1 ? 'null' : index + 1
+    //   }));
+    // })
     .then(result => {
       return res.status(201)
         .location(`/api/users/${result.id}`)

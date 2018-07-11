@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const questionSchema = new mongoose.Schema({
   word: { type: String },
   answer: { type: String },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  next: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' }
+  m: Number,
+  next: Number
 });
 
 questionSchema.set('toObject', {

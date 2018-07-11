@@ -3,55 +3,56 @@ const LinkedList = require('../LinkedList');
 
 // let test = new LinkedList();
 
-let allQuestions = [
+let questions = [
   {
-    'word': 'carro',
+    'question': 'carro',
     'answer': 'car',
   },
   {
-    'word': 'perro',
+    'question': 'perro',
     'answer': 'dog',
   },
   {
-    'word': 'casa',
+    'question': 'casa',
     'answer': 'house',
   },
   {
-    'word': 'autopista',
+    'question': 'autopista',
     'answer': 'highway',
   },
   {
-    'word': 'biblioteca',
+    'question': 'biblioteca',
     'answer': 'library',
   },
   {
-    'word': 'chaqueta',
+    'question': 'chaqueta',
     'answer': 'jacket',
   },
   {
-    'word': 'pantalones',
+    'question': 'pantalones',
     'answer': 'pants',
   },
   {
-    'word': 'Sonrojado',
+    'question': 'Sonrojado',
     'answer': 'blushing',
   },
   {
-    'word': 'traducir',
+    'question': 'traducir',
     'answer': 'translate',
   },
   {
-    'word': 'irrumpir',
+    'question': 'irrumpir',
     'answer': 'burst',
   }
 ];
 
-function main(){
-  let questions = new LinkedList();
-  allQuestions.forEach(item => {
-    questions.insertLast(item);
-  });
-  return questions;
-}
+// function main(){
+//   let questions = new LinkedList();
+//   allQuestions.forEach(item => {
+//     questions.insertLast(item);
+//   });
+//   return questions;
+// }
 
-module.exports = main;
+module.exports = questions;
+// module.exports = main;
