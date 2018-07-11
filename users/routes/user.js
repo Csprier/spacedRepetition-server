@@ -1,7 +1,8 @@
 'use strict';
 
 const express = require('express');
-
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const User = require('../../users/user');
 
 const router = express.Router();
@@ -20,10 +21,12 @@ router.get('/', (req, res, next) => {
       next(err);
     });
 });
-
+router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
 // GET USER QUESTION HEAD
 router.get('/next', (req, res, next) => {
-  User.findOne()
+  console.log(req.user.id);
+  // console.log(authToken);
+  User.findOne({_id: req.user.id})
     .then(user => {
       res.json(user.questions[user.head].question);
     })
@@ -41,16 +44,16 @@ router.post('/answer', (req, res, next) => {
     .then(result => {
       const answeredIndex = result.head;
       const answeredQuestion = result.questions[answeredIndex];
-      
+      console.log(answeredIndex);
+      console.log(answeredQuestion);
       User.findOne({_id: userId})
         .then(result => {
           if(answer.toLowerCase() === answeredQuestion.answer){
+            console.log(answer);
             result.questions[0].m = result.questions[0].m * 2; 
-            result.save();
             message = 'correct';
           } else {
             result.questions[0].m = 1; 
-            result.save();
             message = 'incorrect';
           }
           result.head = answeredQuestion.next;
@@ -62,7 +65,7 @@ router.post('/answer', (req, res, next) => {
         });
     });
   // if message = 'correct' -> res.json(true) else res.json(false) ?????????
-  res.json(true);
+  (message === 'correct') ? res.json(true) : res.json(false);
 });
 
 /* =================================================================================== */
