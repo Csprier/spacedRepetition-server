@@ -20,6 +20,18 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// GET USER QUESTION HEAD
+router.get('/next', (req, res, next) => {
+  User.findOne()
+    .then(user => {
+      res.json(user.questions[user.head]);
+    })
+    .catch(err => {
+      console.error(err);
+      next(err);
+    });
+});
+
 // CREATE NEW USER
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
@@ -95,6 +107,7 @@ router.post('/', (req, res, next) => {
     m: 1,
     next: index === questions.length - 1 ? null : index + 1
   }));
+  
   return User.hashPassword(password)
     .then(digest => {
       const newUser = {
