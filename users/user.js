@@ -7,8 +7,16 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   username: { type: String, default: '', unique: true },
   password: { type: String, require: true },
-  questions: { type: Object, required: true },
-  currentQuestion: { type: Object, required: true }
+  questions: [
+    {
+      _id: mongoose.Schema.Types.ObjectId,
+      question: String,
+      answer: String,
+      m: Number,
+      next: Number
+    }
+  ],
+  head: { type: Number, default: 0 }
 }, { timestamps: true });
 
 userSchema.set('toObject', {
