@@ -6,70 +6,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../../users/user');
 
 const router = express.Router();
-
-const questions = require('../../linkedList/index');
-
-/* =================================================================================== */
-// GET ALL USERS
-router.get('/', (req, res, next) => {
-  User.find()
-    .then(user => {
-      res.json(user);
-    })
-    .catch(err => {
-      console.error(err);
-      next(err);
-    });
-});
-router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
-// GET USER QUESTION HEAD
-router.get('/next', (req, res, next) => {
-  console.log(req.user.id);
-  // console.log(authToken);
-  User.findOne({_id: req.user.id})
-    .then(user => {
-      res.json(user.questions[user.head].question);
-    })
-    .catch(err => {
-      console.error(err);
-      next(err);
-    });
-});
-
-// POST ANSWER
-router.post('/answer', (req, res, next) => {
-  let { answer, userId } = req.body;
-  let message = '';
-  User.findById(userId)
-    .then(result => {
-      const answeredIndex = result.head;
-      const answeredQuestion = result.questions[answeredIndex];
-      console.log(answeredIndex);
-      console.log(answeredQuestion);
-      User.findOne({_id: userId})
-        .then(result => {
-          if(answer.toLowerCase() === answeredQuestion.answer){
-            console.log(answer);
-            result.questions[0].m = result.questions[0].m * 2; 
-            message = 'correct';
-          } else {
-            result.questions[0].m = 1; 
-            message = 'incorrect';
-          }
-          result.head = answeredQuestion.next;
-          result.save();
-        })
-        .catch(err => {
-          console.error(err);
-          next(err);
-        });
-    });
-  // if message = 'correct' -> res.json(true) else res.json(false) ?????????
-  (message === 'correct') ? res.json(true) : res.json(false);
-});
-
 /* =================================================================================== */
 // CREATE NEW USER
+const questions = require('../../linkedList/index');
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -167,6 +106,66 @@ router.post('/', (req, res, next) => {
       console.error(err);
       next(err);
     });
+});
+
+/* =================================================================================== */
+// GET ALL USERS
+router.get('/', (req, res, next) => {
+  User.find()
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => {
+      console.error(err);
+      next(err);
+    });
+});
+router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
+// GET USER QUESTION HEAD
+router.get('/next', (req, res, next) => {
+  console.log(req.user.id);
+  // console.log(authToken);
+  User.findOne({_id: req.user.id})
+    .then(user => {
+      res.json(user.questions[user.head].question);
+    })
+    .catch(err => {
+      console.error(err);
+      next(err);
+    });
+});
+
+// POST ANSWER
+router.post('/answer', (req, res, next) => {
+  let { answer, userId } = req.body;
+  let message = '';
+  User.findById(userId)
+    .then(result => {
+      const answeredIndex = result.head;
+      const answeredQuestion = result.questions[answeredIndex];
+      console.log(answeredIndex);
+      console.log(answeredQuestion);
+      User.findOne({_id: userId})
+        .then(result => {
+          if(answer.toLowerCase() === answeredQuestion.answer){
+            console.log('you passed',answer);
+            result.questions[0].m = result.questions[0].m * 2; 
+            message = 'correct';
+          } else {
+            result.questions[0].m = 1; 
+            message = 'incorrect';
+          }
+          result.head = answeredQuestion.next;
+          result.save();
+          (message === 'correct') ? res.json(true) : res.json(false);
+        })
+        .catch(err => {
+          console.error(err);
+          next(err);
+        });
+    });
+  console.log('message', message);
+  // if message = 'correct' -> res.json(true) else res.json(false) ?????????
 });
 
 /* =================================================================================== */
