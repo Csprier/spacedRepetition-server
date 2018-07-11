@@ -89,23 +89,21 @@ router.post('/', (req, res, next) => {
 
   // Create the new user
   let { username, password } = req.body;
-
+  let defaultQuestions = questions.map((question, index) => ({
+    question: question.question,
+    answer: question.answer,
+    m: 1,
+    next: index === questions.length - 1 ? null : index + 1
+  }));
   return User.hashPassword(password)
     .then(digest => {
       const newUser = {
         username, 
         password: digest,
-        questions
+        questions: defaultQuestions
       };
       return User.create(newUser);
     })
-    // .then((user, questions) => {
-    //   user.questions = questions.map((question, index) => ({
-    //     question: question.word,
-    //     m: 1,
-    //     next: index === questions.length - 1 ? 'null' : index + 1
-    //   }));
-    // })
     .then(result => {
       return res.status(201)
         .location(`/api/users/${result.id}`)
