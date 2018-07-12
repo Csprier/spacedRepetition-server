@@ -1,7 +1,6 @@
 'use strict';
 
 require('dotenv').config();
-// const { JWT_SECRET } = require('./config');
 
 const express = require('express');
 const cors = require('cors');
