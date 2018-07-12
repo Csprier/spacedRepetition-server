@@ -17,11 +17,15 @@ router.post('/login', localAuth, (req, res) => {
   return res.json({ authToken });
 });
 
-const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
+// const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
+router.use('/refresh', passport.authenticate('jwt', {session: false, failWithError: true}));
 
-router.post('/refresh', jwtAuth, (req, res) => {
-  const authToken = createAuthToken(req.user);
-  res.json({ authToken });
+router.post('/refresh', (req, res) => {
+  User.find({_id : req.user.id})
+    .then(user => {
+      const authToken = createAuthToken(user[0]);
+      res.json({ authToken });
+    });
 });
 
 function createAuthToken(user) {
