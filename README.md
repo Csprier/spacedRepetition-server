@@ -23,3 +23,16 @@ If the answer was correct:
 If the answer was wrong:
   Reset M to 1
 Move the question back M places in the list
+
+### Live server!
+https://spaced-repetition-server-ic.herokuapp.com 
+### Endpoints
+- /api/login (for user creation)
+- /api/users (to see all the users)
+
+### Live client!
+https://warm-harbor-78349.herokuapp.com/
+
+Create an account and start learning! It's that simple! Input an answer, hit submit!
+If your guess is correct, you'll see a message saying so and your score tally increment!
+If your guess is incorrect, you'll see a message saying so, and your score will remain unchanged!
