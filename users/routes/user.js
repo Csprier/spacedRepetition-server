@@ -146,27 +146,31 @@ router.post('/answer', (req, res, next) => {
     .then(result => {
       const answeredIndex = result.head;
       const answeredQuestion = result.questions[answeredIndex];
-      // console.log(answeredIndex);
-      // console.log(answeredQuestion);
-      User.findOne({_id: userId})
-        .then(result => {
+
+      User.findOne({ _id: userId })
+        .then(user => {
           if(answer.toLowerCase() === answeredQuestion.answer){
             console.log('you passed',answer);
-            result.questions[answeredIndex].m *= 2;
+            user.questions[answeredIndex].m *= 2;
             message = 'correct';
           } else {
-            result.questions[0].m = 1; 
+            user.questions[0].m = 1; 
             message = 'incorrect';
           }
-          result.head = answeredQuestion.next;
+          user.head = answeredQuestion.next;
+          return user;
+        })
+        .then(user => {
+          // Find insert point
           let currentQuestion = answeredQuestion;
           for(let i = 0; i < answeredQuestion.m; i++){
             const nextIndex = currentQuestion.next;
-            currentQuestion = result.questions[nextIndex];
+            currentQuestion = user.questions[nextIndex];
           }
+          // Insert node
           answeredQuestion.next = currentQuestion.next;
           currentQuestion.next = answeredIndex;
-          result.save();
+          user.save();
           (message === 'correct') ? res.json(true) : res.json(false);
         })
         .catch(err => {
