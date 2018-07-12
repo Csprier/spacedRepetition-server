@@ -4,12 +4,12 @@ const express = require('express');
 const passport = require('passport');
 
 const User = require('../../users/user');
+const questions = require('../../defaultQuestions/index');
 
 const router = express.Router();
 
 /* =================================================================================== */
 // CREATE NEW USER
-const questions = require('../../linkedList/index');
 
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
