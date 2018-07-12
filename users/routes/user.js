@@ -143,40 +143,35 @@ router.post('/answer', (req, res, next) => {
   let { answer, userId } = req.body;
   let message = '';
   User.findById(userId)
-    .then(result => {
-      const answeredIndex = result.head;
-      const answeredQuestion = result.questions[answeredIndex];
+    .then(user => {
+      const answeredIndex = user.head; // Where the user is in the list of questions
+      const answeredQuestion = user.questions[answeredIndex]; // the index of the 'head' of the list according to the user
 
-      User.findOne({ _id: userId })
-        .then(user => {
-          if(answer.toLowerCase() === answeredQuestion.answer){
-            console.log('you passed',answer);
-            user.questions[answeredIndex].m *= 2;
-            message = 'correct';
-          } else {
-            user.questions[0].m = 1; 
-            message = 'incorrect';
-          }
-          user.head = answeredQuestion.next;
-          return user;
-        })
-        .then(user => {
-          // Find insert point
-          let currentQuestion = answeredQuestion;
-          for(let i = 0; i < answeredQuestion.m; i++){
-            const nextIndex = currentQuestion.next;
-            currentQuestion = user.questions[nextIndex];
-          }
-          // Insert node
-          answeredQuestion.next = currentQuestion.next;
-          currentQuestion.next = answeredIndex;
-          user.save();
-          (message === 'correct') ? res.json(true) : res.json(false);
-        })
-        .catch(err => {
-          console.error(err);
-          next(err);
-        });
+      if (answer.toLowerCase() === answeredQuestion.answer){
+        user.questions[answeredIndex].m *= 2;
+        message = 'correct';
+      } else {
+        user.questions[0].m = 1; 
+        message = 'incorrect';
+      }
+      user.head = answeredQuestion.next;
+      
+      // Find insert point
+      let currentQuestion = answeredQuestion;
+      for(let i = 0; i < answeredQuestion.m; i++){
+        const nextIndex = currentQuestion.next;
+        currentQuestion = user.questions[nextIndex];
+      }
+      
+      // Insert node
+      answeredQuestion.next = currentQuestion.next;
+      currentQuestion.next = answeredIndex;
+      user.save();
+      (message === 'correct') ? res.json(true) : res.json(false);
+    })
+    .catch(err => {
+      console.error(err);
+      next(err);
     });
 });
 
