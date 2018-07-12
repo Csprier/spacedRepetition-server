@@ -9,6 +9,7 @@ const router = express.Router();
 /* =================================================================================== */
 // CREATE NEW USER
 const questions = require('../../linkedList/index');
+
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -120,11 +121,13 @@ router.get('/', (req, res, next) => {
       next(err);
     });
 });
+
+// PROTECTION FOR THE FOLLOWING ENDPOINTS
 router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
+
 // GET USER QUESTION HEAD
 router.get('/next', (req, res, next) => {
   console.log(req.user.id);
-  // console.log(authToken);
   User.findOne({_id: req.user.id})
     .then(user => {
       res.json(user.questions[user.head].question);
@@ -143,8 +146,8 @@ router.post('/answer', (req, res, next) => {
     .then(result => {
       const answeredIndex = result.head;
       const answeredQuestion = result.questions[answeredIndex];
-      console.log(answeredIndex);
-      console.log(answeredQuestion);
+      // console.log(answeredIndex);
+      // console.log(answeredQuestion);
       User.findOne({_id: userId})
         .then(result => {
           if(answer.toLowerCase() === answeredQuestion.answer){
@@ -164,8 +167,6 @@ router.post('/answer', (req, res, next) => {
           next(err);
         });
     });
-  console.log('message', message);
-  // if message = 'correct' -> res.json(true) else res.json(false) ?????????
 });
 
 /* =================================================================================== */
