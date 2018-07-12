@@ -35,8 +35,8 @@ router.get('/next', (req, res, next) => {
 
 // POST ANSWER
 router.post('/answer', (req, res, next) => {
-  let {answer, userId} = req.body;
-  let message;
+  let { answer, userId } = req.body;
+  let message = '';
   User.findById(userId)
     .then(result => {
       const answeredIndex = result.head;
@@ -55,11 +55,13 @@ router.post('/answer', (req, res, next) => {
           }
           result.head = answeredQuestion.next;
           result.save();
+        })
+        .catch(err => {
+          console.error(err);
+          next(err);
         });
-       
     });
-  // console.log(userId);
-
+  // if message = 'correct' -> res.json(true) else res.json(false) ?????????
   res.json(true);
 });
 
