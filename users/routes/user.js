@@ -90,7 +90,8 @@ router.post('/', (req, res, next) => {
       const newUser = {
         username, 
         password: digest,
-        questions: defaultQuestions
+        questions: defaultQuestions,
+        counter: 0
       };
       return User.create(newUser);
     })
@@ -149,24 +150,35 @@ router.post('/answer', (req, res, next) => {
       const answeredQuestion = user.questions[answeredIndex];
 
       if (answer.toLowerCase() === answeredQuestion.answer) {
-        if (user.questions[answeredIndex] < 9) {
+        if (user.questions[answeredIndex].m < 9) {
           user.questions[answeredIndex].m *= 2;
           message = 'correct';
+          user.counter++;
         } else {
           user.questions[answeredIndex].m = 1;
           message = 'correct';
+          user.counter++;
         }
       } else {
-        user.questions[0].m = 1; 
+        user.questions[answeredIndex].m = 1; 
         message = 'incorrect';
       }
-      user.head = answeredQuestion.next;
+      if(user.head === null){
+        user.head = 0;
+      } else {
+        user.head = answeredQuestion.next;
+      }
       
       // Find insert point
       let currentQuestion = answeredQuestion;
       for(let i = 0; i < answeredQuestion.m; i++){
-        const nextIndex = currentQuestion.next;
-        currentQuestion = user.questions[nextIndex];
+        if(currentQuestion.next !== null){
+          const nextIndex = currentQuestion.next;
+          currentQuestion = user.questions[nextIndex];
+        } else {
+          const nextIndex = user.head;
+          currentQuestion = user.questions[nextIndex];
+        }
       }
 
       // Insert node

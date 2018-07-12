@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
       next: Number
     }
   ],
-  head: { type: Number, default: 0 }
+  head: { type: Number, default: 0 },
+  counter: {type: Number}
 }, { timestamps: true });
 
 userSchema.set('toObject', {
