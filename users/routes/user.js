@@ -163,7 +163,8 @@ router.post('/answer', (req, res, next) => {
         user.questions[answeredIndex].m = 1; 
         message = 'incorrect';
       }
-      if(user.head === null){
+
+      if (user.head === null) {
         user.head = 0;
       } else {
         user.head = answeredQuestion.next;
