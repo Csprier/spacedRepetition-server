@@ -1,7 +1,4 @@
 'use strict';
-const LinkedList = require('../LinkedList');
-
-// let test = new LinkedList();
 
 let questions = [
   {
@@ -46,13 +43,4 @@ let questions = [
   }
 ];
 
-// function main(){
-//   let questions = new LinkedList();
-//   allQuestions.forEach(item => {
-//     questions.insertLast(item);
-//   });
-//   return questions;
-// }
-
 module.exports = questions;
-// module.exports = main;

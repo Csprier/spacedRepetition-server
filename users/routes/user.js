@@ -2,10 +2,11 @@
 
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
+
 const User = require('../../users/user');
 
 const router = express.Router();
+
 /* =================================================================================== */
 // CREATE NEW USER
 const questions = require('../../linkedList/index');
@@ -127,7 +128,6 @@ router.use('/', passport.authenticate('jwt', {session: false, failWithError: tru
 
 // GET USER QUESTION HEAD
 router.get('/next', (req, res, next) => {
-  console.log(req.user.id);
   User.findOne({_id: req.user.id})
     .then(user => {
       res.json(user.questions[user.head].question);
@@ -142,10 +142,11 @@ router.get('/next', (req, res, next) => {
 router.post('/answer', (req, res, next) => {
   let { answer, userId } = req.body;
   let message = '';
+
   User.findById(userId)
     .then(user => {
-      const answeredIndex = user.head; // Where the user is in the list of questions
-      const answeredQuestion = user.questions[answeredIndex]; // the index of the 'head' of the list according to the user
+      const answeredIndex = user.head; 
+      const answeredQuestion = user.questions[answeredIndex];
 
       if (answer.toLowerCase() === answeredQuestion.answer){
         user.questions[answeredIndex].m *= 2;
@@ -162,7 +163,7 @@ router.post('/answer', (req, res, next) => {
         const nextIndex = currentQuestion.next;
         currentQuestion = user.questions[nextIndex];
       }
-      
+
       // Insert node
       answeredQuestion.next = currentQuestion.next;
       currentQuestion.next = answeredIndex;
