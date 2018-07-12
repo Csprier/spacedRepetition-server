@@ -123,7 +123,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-/* =================================================================================== */
+/* ==================================================================================== */
 // PROTECTION FOR THE FOLLOWING ENDPOINTS
 router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
 
