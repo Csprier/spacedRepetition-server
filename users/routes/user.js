@@ -142,12 +142,15 @@ router.get('/next', (req, res, next) => {
 // POST ANSWER
 router.post('/answer', (req, res, next) => {
   let { answer, userId } = req.body;
+  let answerToDisplayIfIncorrect = {};
   let message = '';
 
   User.findById(userId)
     .then(user => {
       const answeredIndex = user.head; 
       const answeredQuestion = user.questions[answeredIndex];
+
+      answerToDisplayIfIncorrect.answer = answeredQuestion.answer;
 
       if (answer.toLowerCase() === answeredQuestion.answer) {
         if (user.questions[answeredIndex].m < 9) {
@@ -186,7 +189,14 @@ router.post('/answer', (req, res, next) => {
       answeredQuestion.next = currentQuestion.next;
       currentQuestion.next = answeredIndex;
       user.save();
-      (message === 'correct') ? res.json(true) : res.json(false);
+      answerToDisplayIfIncorrect.message = message;
+      
+      if (message === 'correct') {
+        res.json(true);
+      } else if (message === 'incorrect') {
+        answerToDisplayIfIncorrect.boolean = false;
+        res.json(answerToDisplayIfIncorrect);
+      }
     })
     .catch(err => {
       console.error(err);
