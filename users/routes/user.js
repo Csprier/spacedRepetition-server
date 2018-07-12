@@ -10,7 +10,6 @@ const router = express.Router();
 
 /* =================================================================================== */
 // CREATE NEW USER
-
 router.post('/', (req, res, next) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -123,6 +122,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
+/* =================================================================================== */
 // PROTECTION FOR THE FOLLOWING ENDPOINTS
 router.use('/', passport.authenticate('jwt', {session: false, failWithError: true}));
 
@@ -148,9 +148,14 @@ router.post('/answer', (req, res, next) => {
       const answeredIndex = user.head; 
       const answeredQuestion = user.questions[answeredIndex];
 
-      if (answer.toLowerCase() === answeredQuestion.answer){
-        user.questions[answeredIndex].m *= 2;
-        message = 'correct';
+      if (answer.toLowerCase() === answeredQuestion.answer) {
+        if (user.questions[answeredIndex] < 9) {
+          user.questions[answeredIndex].m *= 2;
+          message = 'correct';
+        } else {
+          user.questions[answeredIndex].m = 1;
+          message = 'correct';
+        }
       } else {
         user.questions[0].m = 1; 
         message = 'incorrect';
