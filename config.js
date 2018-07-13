@@ -7,7 +7,7 @@ module.exports = {
         process.env.DATABASE_URL || 'mongodb://localhost/thinkful-backend',
   TEST_DATABASE_URL:
         process.env.TEST_DATABASE_URL ||
-        'mongodb://localhost/thinkful-backend-test',
+        'mongodb://localhost:27017/spaced-repetition-server',
   JWT_SECRET:
       process.env.JWT_SECRET || 'testing-secret',
   JWT_EXPIRY:
