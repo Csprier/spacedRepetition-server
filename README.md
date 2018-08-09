@@ -37,6 +37,9 @@ https://warm-harbor-78349.herokuapp.com/
 ### Client repo is on Isael's github!
 https://github.com/ArizonaMangoJuice/spaced-repetition-client
 
+
+
+#### How it works
 Create an account and start learning! It's that simple!
 
 <img width="376" alt="register-sr" src="https://user-images.githubusercontent.com/26131912/42701297-0da1d1fc-867b-11e8-8327-6d70e26d1ad7.png">
